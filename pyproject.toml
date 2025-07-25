@@ -1,10 +1,11 @@
 [project]
-name = "dagster_dbt"
+name = "dagster_demo"
 requires-python = ">=3.9,<3.14"
 version = "0.1.0"
 dependencies = [
     "dagster==1.11.3",
     "dagster-dbt",
+    "dagster-dlt",
     "dbt-bigquery>=1.10.0",
 ]
 
@@ -22,7 +23,10 @@ build-backend = "hatchling.build"
 directory_type = "project"
 
 [tool.dg.project]
-root_module = "dagster_dbt"
+root_module = "dagster_demo"
 registry_modules = [
-    "dagster_dbt.components.*",
+    "dagster_demo.components.*",
 ]
+
+[tool.uv.sources]
+dagster-demo = { workspace = true }
