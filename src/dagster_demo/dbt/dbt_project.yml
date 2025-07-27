@@ -39,4 +39,7 @@ models:
         materialized: table
         schema: JAFFLE_SHOP_SERVING
     marts:
-      +materialized: table
+      +database: "logical-light-467105-p7"
+      JAFFLE_SHOP_MART:
+        materialized: table
+        schema: JAFFLE_SHOP_MART

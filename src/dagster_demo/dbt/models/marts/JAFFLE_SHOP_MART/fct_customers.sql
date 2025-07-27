@@ -1,3 +1,11 @@
+{{
+    config(
+        materialized = 'table',
+        cluster_by = ['customer_id'],
+        tags = ['daily']
+    )
+}}
+
 with
 
 customers as (
@@ -8,7 +16,7 @@ customers as (
 
 orders as (
 
-    select * from {{ ref('orders') }}
+    select * from {{ ref('fct_orders') }}
 
 ),
 
@@ -51,7 +59,7 @@ joined as (
     from customers
 
     left join customer_orders_summary
-        on customers.customer_id = customer_orders_summary.customer_id
+    on customers.customer_id = customer_orders_summary.customer_id
 
 )
 
