@@ -18,7 +18,8 @@ source as (
 
     select *
     from {{ source('JAFFLE_SHOP_RAW', 'raw_orders') }}
-    where date(ordered_at, {{ var('dbt_date:time_zone') }}) between date('{{ var('min_date') }}') and date('{{ var('max_date') }}')
+    where date(ordered_at, {{ var('dbt_date:time_zone') }}) >= date('{{ var('min_date') }}')
+        and date(ordered_at, {{ var('dbt_date:time_zone') }}) < date('{{ var('max_date') }}')
 
 ),
 
