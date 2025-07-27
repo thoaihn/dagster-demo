@@ -18,12 +18,6 @@ class CustomDagsterDltTranslator(DagsterDltTranslator):
 
 JAFFLE_PATH = "/Users/mac/Documents/working/vieon/dagster-demo/data/jaffle-data"
 
-dlt_pipeline = pipeline(
-    pipeline_name="JAFFLE_SHOP_RAW",
-    dataset_name="JAFFLE_SHOP_RAW",
-    destination="bigquery"
-)
-
 def make_dlt_asset(filename):
     file_path = os.path.join(JAFFLE_PATH, filename)
     asset_key = filename.removesuffix(".csv")
@@ -41,7 +35,11 @@ def make_dlt_asset(filename):
 
     @dlt_assets(
         dlt_source=source_name(),
-        dlt_pipeline=dlt_pipeline,
+        dlt_pipeline=pipeline(
+            pipeline_name=f"JAFFLE_SHOP_RAW_{asset_key}",
+            dataset_name="JAFFLE_SHOP_RAW",
+            destination="bigquery"
+        ),
         name=asset_key,
         group_name="raw",
         dagster_dlt_translator=CustomDagsterDltTranslator()
@@ -50,7 +48,11 @@ def make_dlt_asset(filename):
         yield from dlt.run(
             context=context,
             dlt_source=source_name(),
-            dlt_pipeline=dlt_pipeline
+            dlt_pipeline=pipeline(
+                pipeline_name=f"JAFFLE_SHOP_RAW_{asset_key}",
+                dataset_name="JAFFLE_SHOP_RAW",
+                destination="bigquery"
+            ),
         )
     return asset_fn
 
