@@ -1,8 +1,16 @@
+{{
+    config(
+        materialized = 'table',
+        cluster_by = ['customer_id'],
+        tags = ['daily']
+    )
+}}
+
 with
 
 source as (
 
-    select * from {{ source('ecom', 'raw_customers') }}
+    select * from {{ source('JAFFLE_SHOP_RAW', 'raw_customers') }}
 
 ),
 

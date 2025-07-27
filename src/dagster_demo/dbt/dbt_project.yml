@@ -14,17 +14,29 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
+packages-install-path: "dbt_packages"
+
 target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
 
 vars:
-  "dbt_date:time_zone": "Asia/Saigon"
+  "dbt_date:time_zone": "'Asia/Saigon'"
+
+seeds:
+  dbt_demo:
+    jaffle-data:
+      +database: "logical-light-467105-p7"
+      JAFFLE_SHOP_RAW:
+        schema: JAFFLE_SHOP_RAW
 
 models:
   dbt_demo:
     staging:
-      +materialized: view
+      +database: "logical-light-467105-p7"
+      JAFFLE_SHOP_SERVING:
+        materialized: table
+        schema: JAFFLE_SHOP_SERVING
     marts:
       +materialized: table

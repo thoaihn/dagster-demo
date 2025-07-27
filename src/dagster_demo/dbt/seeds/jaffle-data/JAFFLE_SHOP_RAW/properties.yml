@@ -1,0 +1,53 @@
+version: 2
+
+seeds:
+  - name: raw_customers
+    config:
+      schema: JAFFLE_SHOP_RAW
+      column_types:
+        id: string
+        name: string
+  - name: raw_items
+    config:
+      schema: JAFFLE_SHOP_RAW
+      column_types:
+        id: string
+        order_id: string
+        sku: string
+  - name: raw_orders
+    config:
+      schema: JAFFLE_SHOP_RAW
+      column_types:
+        id: string
+        customer: string
+        ordered_at: timestamp
+        store_id: string
+        subtotal: int64
+        tax_paid: int64
+        order_total: int64
+  - name: raw_products
+    config:
+      schema: JAFFLE_SHOP_RAW
+      column_types:
+        sku: string
+        name: string
+        type: string
+        price: int64
+        description: string
+  - name: raw_stores
+    config:
+      schema: JAFFLE_SHOP_RAW
+      column_types:
+        id: string
+        name: string
+        opened_at: timestamp
+        tax_rate: float64
+  - name: raw_supplies
+    config:
+      schema: JAFFLE_SHOP_RAW
+      column_types:
+        id: string
+        name: string
+        cost: int64
+        perishable: boolean
+        sku: string
