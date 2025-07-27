@@ -1,3 +1,17 @@
+{{
+    config(
+        materialized = 'incremental',
+        incremental_strategy = 'insert_overwrite',
+        partition_by = {
+            "field": "ordered_at",
+            "data_type": "date",
+            "granularity": "day"
+        },
+        cluster_by = ['order_id'],
+        tags = ['daily']
+    )
+}}
+
 with
 
 order_items as (
@@ -9,7 +23,9 @@ order_items as (
 
 orders as (
 
-    select * from {{ ref('stg_orders') }}
+    select *
+    from {{ ref('stg_orders') }}
+    where ordered_at between date('{{ var('min_date') }}') and date('{{ var('max_date') }}')
 
 ),
 
@@ -54,12 +70,14 @@ joined as (
 
     from order_items
 
-    left join orders on order_items.order_id = orders.order_id
+    left join orders
+    on order_items.order_id = orders.order_id
 
-    left join products on order_items.product_id = products.product_id
+    left join products
+    on order_items.product_id = products.product_id
 
     left join order_supplies_summary
-        on order_items.product_id = order_supplies_summary.product_id
+    on order_items.product_id = order_supplies_summary.product_id
 
 )
 

@@ -1,14 +1,32 @@
+{{
+    config(
+        materialized = 'incremental',
+        incremental_strategy = 'insert_overwrite',
+        partition_by = {
+            "field": "ordered_at",
+            "data_type": "date",
+            "granularity": "day"
+        },
+        cluster_by = ['customer_id', 'location_id'],
+        tags = ['daily']
+    )
+}}
+
 with
 
 orders as (
 
-    select * from {{ ref('stg_orders') }}
+    select *
+    from {{ ref('stg_orders') }}
+    where ordered_at between date('{{ var('min_date') }}') and date('{{ var('max_date') }}')
 
 ),
 
 order_items as (
 
-    select * from {{ ref('order_items') }}
+    select *
+    from {{ ref('fct_order_items') }}
+    where ordered_at between date('{{ var('min_date') }}') and date('{{ var('max_date') }}')
 
 ),
 
@@ -54,9 +72,8 @@ compute_booleans as (
 
     from orders
 
-    left join
-        order_items_summary
-        on orders.order_id = order_items_summary.order_id
+    left join order_items_summary
+    on orders.order_id = order_items_summary.order_id
 
 ),
 
