@@ -18,12 +18,7 @@ source as (
 
     select *
     from {{ source('JAFFLE_SHOP_RAW', 'raw_orders') }}
-    where true
-    {% if is_incremental() %}
-        and date(ordered_at, {{ var('dbt_date:time_zone') }}) between (select max(ordered_at) from {{ this }}) and date('{{ var('data_date') }}')
-    {% else %}
-        and date(ordered_at, {{ var('dbt_date:time_zone') }}) between date('2024-09-01') and date('{{ var('data_date') }}')
-    {% endif %}
+    where date(ordered_at, {{ var('dbt_date:time_zone') }}) between date('{{ var('min_date') }}') and date('{{ var('max_date') }}')
 
 ),
 
