@@ -22,7 +22,7 @@ clean-targets:
   - "dbt_packages"
 
 vars:
-  "dbt_date:time_zone": "Asia/Saigon"
+  "dbt_date:time_zone": "'Asia/Saigon'"
 
 seeds:
   dbt_demo:
